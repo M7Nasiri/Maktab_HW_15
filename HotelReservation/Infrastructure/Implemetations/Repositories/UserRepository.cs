@@ -31,6 +31,11 @@ namespace HotelReservation.Infrastructure.Implemetations.Repositories
             return _context.Users.Any(u=>u.Id == userId);
         }
 
+        public bool IsExistUserName(string userName)
+        {
+            return _context.Users.Any(u=>u.UserName == userName);
+        }
+
         public bool IsNormalUser(int userId)
         {
             if (_context.Users.Any(u => u.Id == userId && u.Role == Roles.NormalUser))
@@ -49,19 +54,10 @@ namespace HotelReservation.Infrastructure.Implemetations.Repositories
             return LoginResult<User>.SuccessResult(user);
         }
 
-        public bool register(string userName, string password,Roles role)
+        public bool register(User user)
         {
-            var user = new User
-            {
-                UserName = userName,
-                Password = password,
-                CreatedAt = DateTime.Now,
-                Role = role
-            };
             _context.Users.Add(user);
-            var res =  _context.SaveChanges();
-            return res != 0;
-
+            return _context.SaveChanges() > 0;
         }
 
        

@@ -28,7 +28,14 @@ namespace HotelReservation.Infrastructure.Configurations
                 .IsRequired(false);
 
             builder.HasData(
-               new HotelRoom { Id = 1, RoomNumber = "101", Capacity = 4, PricePerNight = 800000, CreatedAt = DateTime.Now },
+               new HotelRoom
+               {
+                   Id = 1,
+                   RoomNumber = "101",
+                   Capacity = 4,
+                   PricePerNight = 800000,
+                   CreatedAt = DateTime.Now,
+               },
                new HotelRoom { Id = 2, RoomNumber = "102", Capacity = 2, PricePerNight = 400000, CreatedAt = DateTime.Now },
                new HotelRoom { Id = 3, RoomNumber = "103", Capacity = 3, PricePerNight = 600000, CreatedAt = DateTime.Now }
            );

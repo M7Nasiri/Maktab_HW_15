@@ -1,5 +1,6 @@
 ﻿using HotelReservation.Application.Interfaces.Services;
 using HotelReservation.Application.ResultPattern;
+using HotelReservation.Domain.Dtos;
 using HotelReservation.Domain.Entities;
 using HotelReservation.Domain.Enums;
 using HotelReservation.Domain.Interfaces.Repositories;
@@ -40,9 +41,43 @@ namespace HotelReservation.Application.Implemetations.Services
             return _userRepo.Login(userName, password);
         }
 
-        public bool register(string userName, string password, Roles role)
+        public ResultDto Register(string userName, string password, Roles role)
         {
-            return _userRepo.register(userName, password,role);
+            if (_userRepo.IsExistUserName(userName))
+            {
+                return new ResultDto
+                {
+                    IsSuccess = false,
+                    Message = "UserName is Exist."
+                };
+            }
+
+            var user = new User
+            {
+                UserName = userName,
+                Password = password,
+                Role = role,
+                CreatedAt = DateTime.Now
+            };
+
+            try
+            {
+                _userRepo.register(user);
+
+                return new ResultDto
+                {
+                    IsSuccess = true,
+                    Message = $"User {userName} Regist successfully!"
+                };
+            }
+            catch (Exception ex)
+            {
+                return new ResultDto
+                {
+                    IsSuccess = false,
+                    Message = $"Error on Regist user"
+                };
+            }
         }
     }
 }

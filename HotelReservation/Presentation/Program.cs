@@ -30,13 +30,14 @@ do
 
         Console.WriteLine("Enter Role (0)Admin, (1)Receptionist (2)NormalUser");
         int role = int.Parse(Console.ReadLine());
-        if (_userService.register(userName, password, (Roles)role))
+        var resRegist = _userService.Register(userName, password, (Roles)role);
+        if (resRegist.IsSuccess)
         {
-            Console.WriteLine("Register Successfull!");
+            Console.WriteLine(resRegist.Message);
         }
         else
         {
-            Console.WriteLine("UnSuccessfull Register!");
+            Console.WriteLine(resRegist.Message);
         }
         Console.ReadKey();
     }else if(choice == 2)
@@ -96,11 +97,12 @@ do
                         PricePerNight = price,
                         RoomNumber = roomNumber
                     };
-                    if (_roomService.AddRoom(createRoomDto))
-                        Console.WriteLine("Room Added Successfully");
+                    var resAddR = _roomService.AddRoom(createRoomDto);
+                    if (resAddR.IsSuccess)
+                        Console.WriteLine(resAddR.Message);
                     else
                     {
-                        Console.WriteLine("Error on add room");
+                        Console.WriteLine(resAddR.Message);
                     }
                     Console.ReadKey();
                     break;
@@ -114,7 +116,8 @@ do
                     {
                         foreach (var r in reservations)
                         {
-                            Console.WriteLine($"Room id :{r.RoomId} from {r.CheckInDate} to {r.CheckOutDate} -> status : {r.Status} {r.CreatedAt}");
+                            Console.WriteLine($"Room id :{r.RoomId} from {r.CheckInDate} to {r.CheckOutDate}" +
+                                $" -> status : {r.Status} {r.CreatedAt}");
                         }
                     }
                     else
@@ -162,7 +165,7 @@ do
                     int roomId = Int32.Parse(Console.ReadLine());
                     if (!_roomService.IsExistRoom(roomId))
                     {
-                        Console.WriteLine("Invalid room id!");
+                        Console.WriteLine("Invalid room Id!");
                         Console.ReadKey();
                         continue;
                     }

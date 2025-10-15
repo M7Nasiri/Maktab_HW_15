@@ -13,9 +13,10 @@ namespace HotelReservation.Domain.Interfaces.Repositories
     public interface IUserRepository
     {
         LoginResult<User> Login(string userName, string password);
-        bool register(string userName, string password, Roles role);
+        bool register(User user);
         List<User> GetAll();
         bool IsExistUser(int userId);
+        bool IsExistUserName(string userName);
         bool IsNormalUser(int userId);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using HotelReservation.Application.ResultPattern;
+using HotelReservation.Domain.Dtos;
 using HotelReservation.Domain.Entities;
 using HotelReservation.Domain.Enums;
 using System;
@@ -12,7 +13,7 @@ namespace HotelReservation.Application.Interfaces.Services
     public interface IUserService 
     {
         LoginResult<User> Login(string userName, string password);
-        bool register(string userName, string password, Roles role);
+        ResultDto Register(string userName, string password, Roles role);
         List<User> GetAll();
         bool IsExistUser(int userId);
         bool IsNormalUser(int userId);

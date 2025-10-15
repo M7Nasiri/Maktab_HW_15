@@ -20,48 +20,26 @@ namespace HotelReservation.Infrastructure.Implemetations.Repositories
         {
             _context = new AppDbContext();
         }
-        public bool AddRoom(CreateRoomDto createRoomDto)
+        public bool AddRoom(HotelRoom room)
         {
-            bool exists = _context.Rooms
-        .Any(r => r.RoomNumber == createRoomDto.RoomNumber);
-            if (exists)
-            {
-                return false;
-            }
-            var room = new HotelRoom
-            {
-                RoomNumber = createRoomDto.RoomNumber,
-                Capacity = createRoomDto.Capacity,
-                PricePerNight = createRoomDto.PricePerNight,
-                CreatedAt = DateTime.Now,
-                RoomDetails = new RoomDetail
-                {
-                    Description = createRoomDto.Description,
-                    HasAirConditioner = createRoomDto.HasAirConditioner,
-                    HasWifi = createRoomDto.HasWifi,
-                }
-            };
             _context.Add(room);
             return _context.SaveChanges() > 0;
         }
 
-        public List<GetRoomDto> GetAllRoom()
+        public List<HotelRoom> GetAllRoom()
         {
-            return _context.Rooms.Include(r => r.RoomDetails).Select(r => new GetRoomDto
-            {
-                RoomNumber = r.RoomNumber,
-                Capacity = r.Capacity,
-                Description = r.RoomDetails.Description != null ? r.RoomDetails.Description : "—",
-                HasAirConditioner = r.RoomDetails != null && r.RoomDetails.HasAirConditioner,
-                HasWifi = r.RoomDetails != null && r.RoomDetails.HasWifi,
-                PricePerNight = r.PricePerNight,
-                Id = r.Id
-            }).ToList();
+           return _context.Rooms.Include(r => r.RoomDetails).ToList();
         }
 
+        public bool IsExistRoom(string roomNumber)
+        {
+           return _context.Rooms.Any(r=>r.RoomNumber.Equals(roomNumber));
+        }
         public bool IsExistRoom(int roomId)
         {
-           return _context.Rooms.Any(r=>r.Id == roomId);
+           return _context.Rooms.Any(r=>r.Id ==roomId);
         }
+
+
     }
 }
